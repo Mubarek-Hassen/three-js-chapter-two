@@ -6,15 +6,47 @@ import * as dat from "lil-gui"
 const canvas = document.querySelector(".webgl")
 THREE.ColorManagement.enabled = false
 
+//! DEBUG
+const gui = new dat.GUI()
+
 //! SCENE
 const scene = new THREE.Scene()
 
+//! LIGHTS
+//! Ambient light
+const ambientLight = new THREE.AmbientLight(0xffffff, 1)
+gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
+scene.add(ambientLight)
+
+//! Directional light
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+directionalLight.position.set(2, 2, - 1)
+gui.add(directionalLight, 'intensity').min(0).max(1).step(0.001)
+gui.add(directionalLight.position, 'x').min(- 5).max(5).step(0.001)
+gui.add(directionalLight.position, 'y').min(- 5).max(5).step(0.001)
+gui.add(directionalLight.position, 'z').min(- 5).max(5).step(0.001)
+scene.add(directionalLight)
+
+//! MATERIALS
+const material = new THREE.MeshStandardMaterial()
+material.roughness = 0.7
+gui.add(material, 'metalness').min(0).max(1).step(0.001)
+gui.add(material, 'roughness').min(0).max(1).step(0.001)
+
 //! OBJECTS
-const cube = new THREE.Mesh(
-  new THREE.BoxGeometry(1,1,1),
-  new THREE.MeshBasicMaterial()
+const sphere = new THREE.Mesh(
+  new THREE.SphereGeometry(0.5, 32, 32),
+  material
 )
-scene.add(cube)
+
+const plane = new THREE.Mesh(
+  new THREE.PlaneGeometry(4,4),
+  material
+)
+plane.rotation.x = -Math.PI/2
+plane.position.y = -0.5
+
+scene.add(sphere, plane)
 
 //! SIZES
 const sizes = {
@@ -24,7 +56,7 @@ const sizes = {
 
 //! CAMERA
 const camera = new THREE.PerspectiveCamera(75, sizes.width/sizes.height, 1, 1000)
-camera.position.set(0, 1, 2)
+camera.position.set(1, 1, 2)
 scene.add(camera)
 
 //! CONTROLS
