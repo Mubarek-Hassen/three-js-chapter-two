@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import * as dat from "lil-gui"
 
+document.title = "shadows - 3js"
 //! CANVAS
 const canvas = document.querySelector(".webgl")
 THREE.ColorManagement.enabled = false
@@ -14,12 +15,12 @@ const scene = new THREE.Scene()
 
 //! LIGHTS
 //! Ambient light
-const ambientLight = new THREE.AmbientLight(0xffffff, 1)
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.3)
 gui.add(ambientLight, 'intensity').min(0).max(4).step(0.001)
 scene.add(ambientLight)
 
 //! Directional light
-const directionalLight = new THREE.DirectionalLight(0xffffff, 2)
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.3)
 directionalLight.position.set(2, 2, - 1)
 gui.add(directionalLight, 'intensity').min(0).max(3).step(0.001)
 gui.add(directionalLight.position, 'x').min(- 5).max(5).step(0.001)
@@ -48,7 +49,7 @@ directionalLightCameraHelper.visible = false
 scene.add(directionalLight, directionalLightCameraHelper)
 
 //! SPOTLIGHT
-const spotLight = new THREE.SpotLight(0xffffff, 5, 10, Math.PI * 0.3)
+const spotLight = new THREE.SpotLight(0xffffff, 2, 10, Math.PI * 0.3)
 spotLight.castShadow = true;
 spotLight.position.set(0,2,2)
 
@@ -70,9 +71,16 @@ const pointLight = new THREE.PointLight(0xffffff, 3, 10)
 pointLight.position.set(-1, 1, 0)
 pointLight.castShadow = true
 
+pointLight.shadow.mapSize.width = 1024
+pointLight.shadow.mapSize.height = 1024
+
+pointLight.shadow.camera.near = 0.1
+pointLight.shadow.camera.far = 5
+
 scene.add(pointLight)
 
 const pointLightCameraHelper = new THREE.CameraHelper(pointLight.shadow.camera)
+pointLightCameraHelper.visible = false
 scene.add(pointLightCameraHelper)
 
 //! MATERIALS
