@@ -13,6 +13,11 @@ const gui = new dat.GUI()
 //! SCENE
 const scene = new THREE.Scene()
 
+//! TEXTURES
+const textureLoader = new THREE.TextureLoader()
+const bakedShadow = textureLoader.load("textures/bakedShadow.jpg")
+const simpleShadow = textureLoader.load("textures/simpleShadow.jpg")
+
 //! LIGHTS
 //! Ambient light
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.3)
@@ -26,7 +31,7 @@ gui.add(directionalLight, 'intensity').min(0).max(3).step(0.001)
 gui.add(directionalLight.position, 'x').min(- 5).max(5).step(0.001)
 gui.add(directionalLight.position, 'y').min(- 5).max(5).step(0.001)
 gui.add(directionalLight.position, 'z').min(- 5).max(5).step(0.001)
-directionalLight.castShadow = true
+directionalLight.castShadow = false
 
 //* RENDER SIZE OPTIMIZATION
 directionalLight.shadow.mapSize.width = 1024
@@ -50,7 +55,7 @@ scene.add(directionalLight, directionalLightCameraHelper)
 
 //! SPOTLIGHT
 const spotLight = new THREE.SpotLight(0xffffff, 2, 10, Math.PI * 0.3)
-spotLight.castShadow = true;
+spotLight.castShadow = false;
 spotLight.position.set(0,2,2)
 
 
@@ -69,7 +74,7 @@ scene.add(spotLightCameraHelper)
 //! POINTLIGHT
 const pointLight = new THREE.PointLight(0xffffff, 3, 10)
 pointLight.position.set(-1, 1, 0)
-pointLight.castShadow = true
+pointLight.castShadow = false
 
 pointLight.shadow.mapSize.width = 1024
 pointLight.shadow.mapSize.height = 1024
@@ -95,8 +100,10 @@ const sphere = new THREE.Mesh(
   material
 )
 sphere.castShadow = true
+
 const plane = new THREE.Mesh(
   new THREE.PlaneGeometry(4,4),
+  // new THREE.MeshBasicMaterial({ map: bakedShadow })
   material
 )
 plane.rotation.x = -Math.PI/2
@@ -104,6 +111,13 @@ plane.position.y = -0.5
 plane.receiveShadow = true
 
 scene.add(sphere, plane)
+const sphereShadow = new THREE.Mesh(
+  new THREE.PlaneGeometry(1.5,1.5),
+  new THREE.MeshBasicMaterial({ alphaMap: simpleShadow, transparent: true, color: 0x000000 })
+)
+scene.add(sphereShadow)
+sphereShadow.rotation.x = -Math.PI/2
+sphereShadow.position.y = plane.position.y + 0.01
 
 //! SIZES
 const sizes = {
@@ -138,6 +152,14 @@ const tick =()=>{
   const elapsedTime = clock.getElapsedTime()
 
   //* Update objects
+  sphere.position.x = Math.cos(elapsedTime) * 1.5
+  sphere.position.z = Math.sin(elapsedTime) * 1.5
+  sphere.position.y = Math.abs(Math.sin(elapsedTime * 3))
+
+  //* Sphere Shadow Texture
+  sphereShadow.position.x = sphere.position.x
+  sphereShadow.position.z = sphere.position.z
+  sphereShadow.material.opacity = (1 - sphere.position.y) * 0.3
 
 
   //* Update controls
