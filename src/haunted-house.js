@@ -8,12 +8,16 @@ THREE.ColorManagement.enabled = false
 //! CANVAS
 const canvas = document.querySelector(".webgl")
 
+
 //! GUI
 const gui = new dat.GUI()
 
 //! SCENE
 const scene = new THREE.Scene()
 
+//! FOG
+const fog = new THREE.Fog("#ff0000", 2, 6)
+scene.fog = fog
 //! TEXTURES
 const textureLoader = new THREE.TextureLoader()
 
