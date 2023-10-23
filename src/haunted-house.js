@@ -16,7 +16,7 @@ const gui = new dat.GUI()
 const scene = new THREE.Scene()
 
 //! FOG
-const fog = new THREE.Fog("#ff0000", 2, 6)
+const fog = new THREE.Fog("#262837", 1, 15)
 scene.fog = fog
 //! TEXTURES
 const textureLoader = new THREE.TextureLoader()
@@ -133,7 +133,7 @@ const sizes = {
 
 //! CAMERA
 const camera = new THREE.PerspectiveCamera(75, sizes.width/sizes.height, 1, 1000)
-camera.position.set(0, 15, 15)
+camera.position.set(4, 2, 5)
 scene.add(camera)
 
 //* resize & full screen
@@ -166,7 +166,7 @@ const renderer = new THREE.WebGLRenderer({ canvas })
 renderer.setSize(sizes.width, sizes.height)
 renderer.outputColorSpace = THREE.LinearSRGBColorSpace
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-
+renderer.setClearColor("#262837")
 //! ANIMATE
 const clock = new THREE.Clock()
 
