@@ -58,9 +58,7 @@ grassAmbientOcclusionTexture.wrapT = THREE.RepeatWrapping
 grassNormalTexture.wrapT = THREE.RepeatWrapping
 grassRoughnessTexture.wrapT = THREE.RepeatWrapping
 
-
 //! HOUSE
-
 //* GROUP
 const house = new THREE.Group()
 scene.add(house)
@@ -183,6 +181,14 @@ const doorLight = new THREE.PointLight("#ff7d46", 3.5, 7)
 doorLight.position.set(0, 2.2, 2.7)
 house.add(doorLight)
 
+//! GHOST
+const ghost1 = new THREE.PointLight("#ff00ff", 4, 3)
+const ghost2 = new THREE.PointLight("#00ffff", 4, 3)
+const ghost3 = new THREE.PointLight("#ffff00", 4, 3)
+
+scene.add(ghost1, ghost2, ghost3)
+
+
 //! SIZES
 const sizes = {
   width: window.innerWidth,
@@ -232,6 +238,21 @@ function tick(){
   const elapsedTime = clock.getElapsedTime()
   
   //* update objects
+  // GHOST
+  const ghost1Angle = elapsedTime/2
+  ghost1.position.x = Math.cos(ghost1Angle) * 4
+  ghost1.position.z = Math.sin(ghost1Angle) * 4
+  ghost1.position.y = Math.sin(elapsedTime * 3)
+
+  const ghost2Angle = -elapsedTime/3
+  ghost2.position.x = Math.cos(ghost2Angle) * 4
+  ghost2.position.z = Math.sin(ghost2Angle) * 4
+  ghost2.position.y = Math.sin(elapsedTime * 4) + Math.sin(elapsedTime * 2.5)
+
+  const ghost3Angle = elapsedTime/4
+  ghost3.position.x = Math.cos(ghost3Angle) * (7 + Math.sin(elapsedTime/3))
+  ghost3.position.z = Math.sin(ghost3Angle) * (7 + Math.sin(elapsedTime/2))
+  ghost3.position.y = Math.cos(elapsedTime * 4)
 
 
   //* update control
