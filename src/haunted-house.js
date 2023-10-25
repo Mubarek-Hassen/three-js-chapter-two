@@ -18,10 +18,11 @@ const scene = new THREE.Scene()
 //! FOG
 const fog = new THREE.Fog("#262837", 1, 15)
 scene.fog = fog
+
 //! TEXTURES
 const textureLoader = new THREE.TextureLoader()
 
-//* door textures
+//! door textures
 const doorColorTexture = textureLoader.load("/textures-haunted-house/door/color.jpg")
 const doorAlphaTexture = textureLoader.load("/textures-haunted-house/door/alpha.jpg")
 const doorAmbientOcclusionTexture = textureLoader.load("/textures-haunted-house/door/ambientOcclusion.jpg")
@@ -29,6 +30,33 @@ const doorHeightTexture = textureLoader.load("/textures-haunted-house/door/heigh
 const doorNormalTexture = textureLoader.load("/textures-haunted-house/door/normal.jpg")
 const doorMetalnessTexture = textureLoader.load("/textures-haunted-house/door/metalness.jpg")
 const doorRoghnessTexture = textureLoader.load("/textures-haunted-house/door/roughness.jpg")
+
+//! wall textures
+const brickColorTexture = textureLoader.load("/textures-haunted-house/bricks/color.jpg")
+const brickAmbientOcclusionTexture = textureLoader.load("/textures-haunted-house/bricks/ambientOcclusion.jpg")
+const brickNormalTexture = textureLoader.load("/textures-haunted-house/bricks/normal.jpg")
+const brickRoughnessTexture = textureLoader.load("/textures-haunted-house/bricks/roughness.jpg")
+
+//! grass textures
+const grassColorTexture = textureLoader.load("/textures-haunted-house/grass/color.jpg")
+const grassAmbientOcclusionTexture = textureLoader.load("/textures-haunted-house/grass/ambientOcclusion.jpg")
+const grassNormalTexture = textureLoader.load("/textures-haunted-house/grass/normal.jpg")
+const grassRoughnessTexture = textureLoader.load("/textures-haunted-house/grass/roughness.jpg")
+
+grassColorTexture.repeat.set(8, 8)
+grassAmbientOcclusionTexture.repeat.set(8, 8)
+grassNormalTexture.repeat.set(8, 8)
+grassRoughnessTexture.repeat.set(8, 8)
+
+grassColorTexture.wrapS = THREE.RepeatWrapping
+grassAmbientOcclusionTexture.wrapS = THREE.RepeatWrapping
+grassNormalTexture.wrapS = THREE.RepeatWrapping
+grassRoughnessTexture.wrapS = THREE.RepeatWrapping
+
+grassColorTexture.wrapT = THREE.RepeatWrapping
+grassAmbientOcclusionTexture.wrapT = THREE.RepeatWrapping
+grassNormalTexture.wrapT = THREE.RepeatWrapping
+grassRoughnessTexture.wrapT = THREE.RepeatWrapping
 
 
 //! HOUSE
@@ -40,7 +68,12 @@ scene.add(house)
 //* WALLS
 const walls = new THREE.Mesh(
   new THREE.BoxGeometry(4, 2.5, 4),
-  new THREE.MeshStandardMaterial({ color: '#ac8e82' })
+  new THREE.MeshStandardMaterial({
+    map: brickColorTexture,
+    aoMap: brickAmbientOcclusionTexture,
+    normalMap: brickNormalTexture,
+    roughnessMap: brickRoughnessTexture,
+  })
 )
 walls.position.y = 2.5/2
 house.add(walls)
@@ -76,7 +109,12 @@ house.add(door)
 //* FLOOR
 const floor = new THREE.Mesh(
   new THREE.PlaneGeometry(20, 20),
-  new THREE.MeshStandardMaterial({ color: "#a9c388" })
+  new THREE.MeshStandardMaterial({
+    map: grassColorTexture,
+    aoMap: grassAmbientOcclusionTexture,
+    normalMap: grassNormalTexture,
+    roughnessMap: grassRoughnessTexture,
+  })
 )
 floor.rotation.x = - Math.PI/2
 floor.position.y = 0
