@@ -21,6 +21,16 @@ scene.fog = fog
 //! TEXTURES
 const textureLoader = new THREE.TextureLoader()
 
+//* door textures
+const doorColorTexture = textureLoader.load("/textures-haunted-house/door/color.jpg")
+const doorAlphaTexture = textureLoader.load("/textures-haunted-house/door/alpha.jpg")
+const doorAmbientOcclusionTexture = textureLoader.load("/textures-haunted-house/door/ambientOcclusion.jpg")
+const doorHeightTexture = textureLoader.load("/textures-haunted-house/door/height.jpg")
+const doorNormalTexture = textureLoader.load("/textures-haunted-house/door/normal.jpg")
+const doorMetalnessTexture = textureLoader.load("/textures-haunted-house/door/metalness.jpg")
+const doorRoghnessTexture = textureLoader.load("/textures-haunted-house/door/roughness.jpg")
+
+
 //! HOUSE
 
 //* GROUP
@@ -46,8 +56,18 @@ house.add(roof)
 
 //* DOOR
 const door = new THREE.Mesh(
-  new THREE.PlaneGeometry(2, 2),
-  new THREE.MeshStandardMaterial({ color: "#aa7b7b" })
+  new THREE.PlaneGeometry(2.2, 2.2, 100, 100),
+  new THREE.MeshStandardMaterial({ 
+    map: doorColorTexture,
+    transparent: true,
+    alphaMap: doorAlphaTexture,
+    aoMap: doorAmbientOcclusionTexture,
+    displacementMap: doorHeightTexture,
+    displacementScale: 0.1,
+    normalMap: doorNormalTexture,
+    metalnessMap: doorMetalnessTexture,
+    roughnessMap: doorRoghnessTexture
+  })
 )
 door.position.y = 1
 door.position.z = 2 + 0.01
