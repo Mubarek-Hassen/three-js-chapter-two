@@ -2,6 +2,7 @@ import * as THREE from "three"
 import * as dat from "lil-gui"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
+THREE.ColorManagement.enabled = false
 //! GUI
 // const gui = new dat.GUI()
 //! CANVAS
@@ -15,7 +16,20 @@ const textureLoader = new THREE.TextureLoader()
 //! OBJECTS
 
 //* PARTICLES
-const particlesGeometry = new THREE.SphereGeometry(1,32,32)
+const particlesGeometry = new THREE.BufferGeometry()
+const count = 500
+
+const positions = new Float32Array(count * 3)
+
+for (let i = 0; i < count * 3; i++){
+  positions[i] = (Math.random() - 0.5) * 10
+}
+
+particlesGeometry.setAttribute(
+  "position",
+  new THREE.BufferAttribute(positions, 3)
+)
+
 const particlesMaterial = new THREE.PointsMaterial({
   size: 0.02,
   sizeAttenuation: true,
