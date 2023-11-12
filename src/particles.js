@@ -105,6 +105,10 @@ function tick(){
   const elapsedTime = clock.getElapsedTime()
 
   //* update objects
+  // particles.rotation.y = elapsedTime * 0.2
+  // for(let i = 0; i < count; i++){
+  //   const i3 = i * 3
+  // }
 
   //* renderer update
   renderer.render(scene, camera)
