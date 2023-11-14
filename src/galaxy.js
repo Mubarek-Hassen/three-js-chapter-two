@@ -18,6 +18,7 @@ const textureLoader = new THREE.TextureLoader()
 //* parameters
 const parameters = {}
 parameters.count = 1000
+parameters.size = 0.02
 
 //* galaxy
 const generateGalaxy =()=>{
@@ -31,6 +32,14 @@ const generateGalaxy =()=>{
     positions[i3 + 2] = (Math.random() - 0.5) * 3
   }
   geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+  const material = new THREE.PointsMaterial({
+    size: parameters.size,
+    sizeAttenuation: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending
+})
+  const points = new THREE.Points(geometry, material)
+    scene.add(points)
 }
 generateGalaxy()
 
