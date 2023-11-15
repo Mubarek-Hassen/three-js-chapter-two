@@ -20,8 +20,11 @@ const parameters = {}
 parameters.count = 1000
 parameters.size = 0.02
 
+gui.add(parameters, "count").min(100).max(100000).step(100).onFinishChange(generateGalaxy)
+gui.add(parameters, "size").min(0.001).max(0.1).step(0.001).onFinishChange(generateGalaxy)
+
 //* galaxy
-const generateGalaxy =()=>{
+function generateGalaxy(){
   const geometry = new THREE.BufferGeometry()
 
   const positions = new Float32Array(parameters.count * 3)
