@@ -44,22 +44,33 @@ gui.addColor(parameters, "materialColor")
 //!		TEXTURES
 const textureLoader = new THREE.TextureLoader()
 
+//!		OBJECTS
 
-const cube = new THREE.Mesh(
-	new THREE.BoxGeometry(1,1,1),
-	new THREE.MeshBasicMaterial({ color: '#ff0000' })
+const mesh1 = new THREE.Mesh(
+	new THREE.TorusGeometry(1, 0.4, 16, 60),
+	new THREE.MeshBasicMaterial({color: "#ff0000"})
 )
-scene.add(cube)
+
+const mesh2 = new THREE.Mesh(
+	new THREE.ConeGeometry(1, 2, 32),
+	new THREE.MeshBasicMaterial({color: "#ff0000"})
+)
+const mesh3 = new THREE.Mesh(
+	new THREE.TorusKnotGeometry(0.8, 0.35, 100, 16),
+	new THREE.MeshBasicMaterial({color: "#ff0000"})
+)
+
+scene.add(mesh1, mesh2, mesh3)
 
 
 
 //!		CAMERA
-const camera = new THREE.PerspectiveCamera( 75, sizes.width/sizes.height, 0.1, 100)
-camera.position.set(0, 0, 4)
+const camera = new THREE.PerspectiveCamera( 35, sizes.width/sizes.height, 0.1, 100)
+camera.position.set(0, 0, 6)
 scene.add(camera)
 
 //!		RENDERER
-const renderer = new THREE.WebGLRenderer({ canvas })
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, })
 renderer.setSize( sizes.width, sizes.height )
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.outputColorSpace = THREE.LinearSRGBColorSpace
