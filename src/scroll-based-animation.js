@@ -62,11 +62,12 @@ scene.add(directionalLight)
 
 //!		OBJECTS
 
+const objectsDistance = 4
+
 const mesh1 = new THREE.Mesh(
 	new THREE.TorusGeometry(1, 0.4, 16, 60),
 	material
 )
-
 const mesh2 = new THREE.Mesh(
 	new THREE.ConeGeometry(1, 2, 32),
 	material
@@ -76,7 +77,17 @@ const mesh3 = new THREE.Mesh(
 	material
 )
 
+mesh1.position.y = - objectsDistance * 0
+mesh2.position.y = - objectsDistance * 1
+mesh3.position.y = - objectsDistance * 2
+
+mesh1.position.x = 2
+mesh2.position.x = -2
+mesh3.position.x = 2
+
 scene.add(mesh1, mesh2, mesh3)
+
+const sectionMeshes = [ mesh1, mesh2, mesh3 ]
 
 
 
@@ -91,22 +102,55 @@ renderer.setSize( sizes.width, sizes.height )
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.outputColorSpace = THREE.LinearSRGBColorSpace
 
-//!		CONTROLS
-// const controls = new OrbitControls(camera, canvas)
-// controls.enableDamping = true
+
+
+//*		SCROLL
+
+let scrollY = window.scrollY
+
+window.addEventListener("scroll", ()=>{
+	scrollY = window.scrollY
+
+})
+
+
+
+//*		CURSOR
+const cursor = {}
+cursor.x = 0
+cursor.y = 0
+
+window.addEventListener("mousemove", (event)=>{
+
+	cursor.x = event.clientX / sizes.width - 0.5
+	cursor.y = event.clientY / sizes.height - 0.5
+})
+
+
+
 
 //!		ANIMATE
 const clock = new THREE.Clock()
 
 function tick(){
-	const elapsedTime = clock.elapsedTime
+	const elapsedTime = clock.getElapsedTime()
 
 	// update objects
 
+	camera.position.y = - scrollY / sizes.height * objectsDistance
 
-	// update control
-	// controls.update()
+	const parallaxX = cursor.x
+	const parallaxY = - cursor.y
 
+	camera.position.x = parallaxX
+	camera.position.y = parallaxY
+
+	for(const mesh of sectionMeshes){
+		
+		mesh.rotation.x = elapsedTime * 0.1
+		mesh.rotation.y = elapsedTime * 0.12
+
+	}
 	// renderer
 	renderer.render(scene, camera)
 
