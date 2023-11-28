@@ -92,9 +92,11 @@ const sectionMeshes = [ mesh1, mesh2, mesh3 ]
 
 
 //!		CAMERA
+const cameraGroup = new THREE.Group()
+scene.add(cameraGroup)
 const camera = new THREE.PerspectiveCamera( 35, sizes.width/sizes.height, 0.1, 100)
 camera.position.set(0, 0, 6)
-scene.add(camera)
+cameraGroup.add(camera)
 
 //!		RENDERER
 const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, })
@@ -142,8 +144,8 @@ function tick(){
 	const parallaxX = cursor.x
 	const parallaxY = - cursor.y
 
-	camera.position.x = parallaxX
-	camera.position.y = parallaxY
+	cameraGroup.position.x += (parallaxX - cameraGroup.position.x) * 0.1
+	cameraGroup.position.y += (parallaxY - cameraGroup.position.y) * 0.1
 
 	for(const mesh of sectionMeshes){
 		
